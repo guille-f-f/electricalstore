@@ -20,6 +20,4 @@ public class Factory {
     @Column(name = "factory_name", nullable = false)
     private String factoryName;
 
-    @ManyToMany(mappedBy = "factories")
-    private List<Article> articles;
 }

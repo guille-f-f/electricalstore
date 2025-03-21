@@ -19,11 +19,8 @@ public class Article {
     @Column(name = "id_article", updatable = false, nullable = false)
     private UUID idArticle;
 
-    @Column(name = "article_number")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "article_sequence")
-    @SequenceGenerator(name = "article_sequence", sequenceName = "article_sequence", allocationSize = 1)
+    @Column(name = "article_number", unique = true)
     private Integer articleNumber;
-    private static final AtomicInteger atomicInteger = new AtomicInteger(0);
 
     @Column(name = "article_name", nullable = false)
     private String articleName;
@@ -31,12 +28,11 @@ public class Article {
     @Column(name = "article_description", nullable = false)
     private String articleDescription;
 
-    @ManyToMany
-    @JoinTable(
-            name = "article_factory",
-            joinColumns = @JoinColumn(name = "article_id"),
-            inverseJoinColumns = @JoinColumn(name = "factory_id")
-    )
-    private List<Factory> factories;
+    @ManyToOne
+    private Factory factory;
+
+    @OneToOne
+    private Image image;
+
 }
 
