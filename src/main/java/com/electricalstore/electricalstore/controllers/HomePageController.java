@@ -1,7 +1,9 @@
 package com.electricalstore.electricalstore.controllers;
 
+import com.electricalstore.electricalstore.entities.User;
 import com.electricalstore.electricalstore.services.ArticleService;
 import com.electricalstore.electricalstore.services.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -20,7 +22,7 @@ public class HomePageController {
 
     @GetMapping("/")
     public String homePage() {
-        return "dashboard.html";
+        return "index.html";
     }
 
     @GetMapping("/login")
@@ -39,9 +41,21 @@ public class HomePageController {
         return "redirect:/login";
     }
 
+    @GetMapping("/index")
+    public String redirectUserLogged(HttpSession session) {
+        User user = (User) session.getAttribute("userSession");
+        System.out.println("DATOS DE USUARIO: ");
+        System.out.println(user.getName());
+        System.out.println(user.getRol().toString());
+        if (user.getRol().toString().equals("ADMIN")) {
+            return "redirect:/admin/dashboard";
+        }
+        return "redirect:/dashboard";
+    }
+
     @GetMapping("/dashboard")
     public String showDashboard(ModelMap model) {
         model.addAttribute("articles", articleService.getAllArticles());
-        return "index.html";
+        return "homepage.html";
     }
 }

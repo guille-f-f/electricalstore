@@ -3,6 +3,7 @@
 <head th:replace="~{fragments/head :: head('Dashboard')}"></head>
 <body>
 <header th:replace="~{fragments/header :: header}"></header>
+<main th:replace="~{fragments/main :: main}"></main>
 <section th:each="article : ${articles}">
     <div class="card" style="width: 18rem;">
         <img th:src="@{/image/article/__${article.idArticle}__}" class="card-img-top" alt="...">
@@ -12,7 +13,6 @@
         </div>
     </div>
 </section>
-<main th:replace="~{fragments/main :: main}"></main>
 <footer th:replace="~{fragments/footer :: footer}"></footer>
 </body>
 </html>

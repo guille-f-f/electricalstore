@@ -61,7 +61,7 @@ public class UserService implements UserDetailsService {
         authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRol().toString()));
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(true);
-        session.setAttribute("session", user);
+        session.setAttribute("userSession", user);
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
     }
 

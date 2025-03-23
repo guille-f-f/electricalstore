@@ -1,21 +1,8 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Artículos</title>
-    <link rel="stylesheet" href="/css/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-</head>
+<head th:replace="~{fragments/head :: head('Lista de Articulos.')}"></head>
 <body class="lista-articulos">
-
-<!-- Navbar -->
-<header>
-    <nav>
-        <h1>La Casa de Electricidad</h1>
-    </nav>
-</header>
-
+<header th:replace="fragments/header :: header"></header>
 <main class="main-lista-articulos">
     <section class="form-container">
         <h2>Gestión de Artículos</h2>
@@ -60,10 +47,7 @@
         </table>
     </section>
 </main>
-
-<footer>
-    <p>&copy; 2025 La Casa de Electricidad. Todos los derechos reservados.</p>
-</footer>
-
+<main th:replace="~{fragments/main :: main}"></main>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
 </body>
 </html>

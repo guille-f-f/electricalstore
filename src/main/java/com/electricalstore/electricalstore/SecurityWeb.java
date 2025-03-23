@@ -31,7 +31,7 @@ public class SecurityWeb {
                         .loginProcessingUrl("/logincheck")
                         .usernameParameter("email")
                         .passwordParameter("password")
-                        .defaultSuccessUrl("/dashboard", true)
+                        .defaultSuccessUrl("/index", true)
                         .permitAll()
                 )
                 .logout((logout) -> logout
