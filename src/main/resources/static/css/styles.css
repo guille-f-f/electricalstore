@@ -72,7 +72,7 @@ h2 {
 
 /* Contenedor del formulario */
 .form-container {
-    max-width: 400px;
+    max-width: fit-content;
     margin: 50px auto;
     padding: 20px;
     background: white;
@@ -112,14 +112,12 @@ html, body {
     margin: 0;
 }
 
-/* El contenedor principal ocupa el espacio disponible, empujando el footer hacia el fondo */
-main {
-    min-height: 100%;
-    padding-bottom: 60px; /* Espacio suficiente para que el footer no tape el contenido */
+/* Estilos para la tabla de artículos */
+/* Estilos para la tabla de artículos */
+.main-lista-articulos {
+    max-width: 95%;
+    margin: auto;
 }
-
-/* Estilos para la tabla de artículos */
-/* Estilos para la tabla de artículos */
 .lista-articulos-table {
     width: 100%; /* Ancho total */
     table-layout: auto; /* Ajusta el ancho según el contenido */
@@ -189,26 +187,17 @@ body {
     padding: 0;
 }
 
-main {
-    padding: 20px;
-}
-
 /* Asegurar que el footer se quede abajo */
 html, body {
     height: 100%;
     margin: 0;
 }
 
-main {
-    min-height: 100%;
-    padding-bottom: 60px; /* Espacio suficiente para el footer */
-}
-
 footer {
     position: relative;
     bottom: 0;
     width: 100%;
-     background-color: #0056b3;
+    background-color: #0056b3;
     color: white;
     text-align: center;
     padding: 10px;

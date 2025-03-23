@@ -21,7 +21,8 @@ public class HomePageController {
     private ArticleService articleService;
 
     @GetMapping("/")
-    public String homePage() {
+    public String homePage(ModelMap model) {
+        model.addAttribute("articles", articleService.getAllArticles());
         return "index.html";
     }
 
@@ -37,16 +38,14 @@ public class HomePageController {
 
     @PostMapping("/register")
     public String handleUserRegister(@RequestParam String name, @RequestParam String lastName, @RequestParam String email, @RequestParam String password, @RequestParam String repeatPassword, ModelMap modelo) {
-        userService.register(email, name, lastName, password, repeatPassword);
+        User user = userService.register(email, name, lastName, password, repeatPassword);
+        System.out.println("ROLE DE USUARIO ALMACENADO: " + user.getRol());
         return "redirect:/login";
     }
 
     @GetMapping("/index")
     public String redirectUserLogged(HttpSession session) {
         User user = (User) session.getAttribute("userSession");
-        System.out.println("DATOS DE USUARIO: ");
-        System.out.println(user.getName());
-        System.out.println(user.getRol().toString());
         if (user.getRol().toString().equals("ADMIN")) {
             return "redirect:/admin/dashboard";
         }
@@ -54,8 +53,7 @@ public class HomePageController {
     }
 
     @GetMapping("/dashboard")
-    public String showDashboard(ModelMap model) {
-        model.addAttribute("articles", articleService.getAllArticles());
+    public String showDashboard() {
         return "homepage.html";
     }
 }

@@ -45,12 +45,24 @@ public class ArticleController {
         return "article_form.html";
     }
 
+    @GetMapping("/form/{idArticle}")
+    public String showAddArticleForm(@RequestParam UUID idArticle, ModelMap model) {
+        model.addAttribute("article", articleService.getArticleById(idArticle))
+        model.addAttribute("factories", factoryService.getAllFactories());
+        return "article_form.html";
+    }
+
     @RequestMapping("/add")
     public String handleAddArticle(@RequestParam String name, @RequestParam String description, @RequestParam String idFactory, @RequestParam(required = false) MultipartFile file) throws IOException {
         System.out.println("PREMETODO");
         articleService.addArticle(name, description, UUID.fromString(idFactory), file);
         System.out.println("PostMETODO");
         return "redirect:/list";
+    }
+
+    @GetMapping("/update/{idArticle}")
+    public String showUpdateArticleForm(@RequestParam UUID idArticle) {
+        return "redirect:/form/" + idArticle;
     }
 
 }

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head></head>
+<body>
+<section th:fragment="articles" th:each="article : ${articles}" class="px-5 pb-5">
+    <h2 class="mb-2 text-center">Articulos</h2>
+    <div class="d-flex flex-wrap justify-content-around">
+        <div class="card" style="width: 18rem;">
+            <img th:src="@{/image/article/__${article.idArticle}__}" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${article.articleName}"></h5>
+                <p class="card-text" th:text="${article.articleDescription}"></p>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

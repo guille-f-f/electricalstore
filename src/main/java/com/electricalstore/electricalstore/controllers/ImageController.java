@@ -28,7 +28,7 @@ public class ImageController {
     @Autowired
     private ArticleService articleService;
 
-//    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @PreAuthorize("permitAll()")
     @GetMapping("/article/{idArticle}")
     public ResponseEntity<byte[]> getImage(@PathVariable UUID idArticle) {
         Article article = articleService.getArticleById(idArticle);

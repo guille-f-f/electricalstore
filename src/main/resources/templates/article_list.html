@@ -32,16 +32,16 @@
                 <td th:text="${article.articleName}"></td>
                 <td th:text="${article.articleDescription}"></td>
                 <td><img th:src="@{/image/article/__${article.idArticle}__}" alt=""/></td>
-                <td>
-                    <a th:href="@{/artcile/update/__${artcile.idArticle}__}" class="btn btn-edit">
-                        <i class="fas fa-edit"></i> Modificar
-                    </a>
-                    <form action="#" method="POST" style="display: inline;">
-                        <button type="submit" class="btn btn-delete" onclick="return confirm('¿Estás seguro?')">
-                            <i class="fas fa-trash-alt"></i> Eliminar
-                        </button>
-                    </form>
-                </td>
+<!--                <td>-->
+<!--                    <a th:href="@{/artcile/update/__${artcile.idArticle}__}" class="btn btn-edit">-->
+<!--                        <i class="fas fa-edit"></i> Modificar-->
+<!--                    </a>-->
+<!--                    <form action="#" method="POST" style="display: inline;">-->
+<!--                        <button type="submit" class="btn btn-delete" onclick="return confirm('¿Estás seguro?')">-->
+<!--                            <i class="fas fa-trash-alt"></i> Eliminar-->
+<!--                        </button>-->
+<!--                    </form>-->
+<!--                </td>-->
             </tr>
             </tbody>
         </table>
