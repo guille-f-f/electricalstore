@@ -3,64 +3,46 @@
 <head th:replace="~{fragments/head :: head('Lista de Fábricas.')}"></head>
 <body class="lista-articulos">
 <header th:replace="fragments/header :: header"></header>
-<main>
-    <section class="form-container">
-        <h2>Gestión de Fábricas</h2>
+<section class="form-container">
+    <h2>Gestión de Fabricas</h2>
 
-        <!-- Mensajes de éxito o error (puedes usarlo más adelante con backend si es necesario) -->
-        <div class="alert alert-success" id="exito" style="display: none;">¡Operación exitosa!</div>
-        <div class="alert alert-danger" id="error" style="display: none;">¡Hubo un error!</div>
+    <!-- Mensajes de éxito o error -->
+    <div class="alert alert-success" id="exito" style="display: none;">¡Operación exitosa!</div>
+    <div class="alert alert-danger" id="error" style="display: none;">¡Hubo un error!</div>
 
-        <a href="#" class="btn">Nueva Fábrica</a>
+    <a th:href="@{/factory/form}" class="btn">Nueva Fábrica</a>
 
-        <!-- Tabla para mostrar las fábricas -->
-        <table class="table">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Acciones</th>
-            </tr>
-            </thead>
-            <tbody>
-            <!-- Fila de ejemplo, simula que hay fábricas cargadas -->
-            <tr>
-                <td>1</td>
-                <td>Fábrica ABC</td>
-                <td>
-                    <!-- Icono de modificar -->
-                    <a href="#" class="btn btn-edit">
-                        <i class="fas fa-edit"></i> Modificar
-                    </a>
-                    <!-- Formulario para eliminar -->
-                    <form action="#" method="POST" style="display: inline;">
-                        <button type="submit" class="btn btn-delete" onclick="return confirm('¿Estás seguro?')">
-                            <i class="fas fa-trash-alt"></i> Eliminar
-                        </button>
-                    </form>
-                </td>
-            </tr>
-
-            <!-- Otra fila de ejemplo -->
-            <tr>
-                <td>2</td>
-                <td>Fábrica XYZ</td>
-                <td>
-                    <!-- Icono de modificar -->
-                    <a href="#" class="btn btn-edit">
-                        <i class="fas fa-edit"></i> Modificar
-                    </a>
-                    <!-- Formulario para eliminar -->
-                    <form action="#" method="POST" style="display: inline;">
-                        <button type="submit" class="btn btn-delete" onclick="return confirm('¿Estás seguro?')">
-                            <i class="fas fa-trash-alt"></i> Eliminar
-                        </button>
-                    </form>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </section>
+    <!-- Tabla para mostrar fábricas -->
+    <table class="table lista-articulos-table">
+        <thead>
+        <tr>
+            <th>Nro.</th>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Imagen</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody th:each="factory : ${factories}">
+        <tr>
+            <td th:text="${factory.idFactory}"></td>
+            <td th:text="${factory.factoryName}"></td>
+            <td th:text="${}"></td>
+            <td>
+                <a th:href="@{/factory/form/__${factory.idFactory}__}" class="btn btn-edit">
+                    <i class="fas fa-edit">Modificar</i>
+                </a>
+                <form th:action="@{/factory/delete/__${factory.idFactory}__}" method="POST" style="display: inline;">
+                    <button type="submit" class="btn btn-delete" onclick="return confirm('¿Estás seguro?')">
+                        <i class="fas fa-trash-alt"></i> Eliminar
+                    </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</section>
 </main>
 <main th:replace="~{fragments/main :: main}"></main>
 <footer th:replace="~{fragments/footer :: footer}"></footer>

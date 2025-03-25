@@ -12,6 +12,7 @@ import java.util.UUID;
 @Table(name = "user")
 @Data
 public class User {
+    @SuppressWarnings("deprecation")
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")

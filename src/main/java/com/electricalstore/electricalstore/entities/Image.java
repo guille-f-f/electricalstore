@@ -10,6 +10,7 @@ import java.util.UUID;
 @Table(name = "image")
 @Data
 public class Image {
+    @SuppressWarnings("deprecation")
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")

@@ -4,15 +4,13 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 import lombok.*;
 
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import java.util.UUID;
 
 @Entity
 @Table(name = "article")
 @Data
 public class Article {
+    @SuppressWarnings("deprecation")
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
