@@ -2,33 +2,52 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragments/head :: head('Formulario de Articulo.')}"></head>
 <body>
-<header th:replace="fragments/header :: header"></header>
+<header th:replace="~{fragments/header :: header}"></header>
+<h2 class="welcome fw-normal text-center" th:text="${updateMode} ? 'EDITAR ARTICULO' : 'CREAR ARTICULO'"></h2>
 <form class="w-1/2 container-sm mt-5" th:action="@{/article/add}" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="idArticle" th:value="${article.idArticle}">
+    <input type="hidden" name="updateMode" th:value="${updateMode}">
     <div class="mb-3">
         <label for="articleName" class="form-label">Nombre de Articulo</label>
-        <input type="text" class="form-control" name="name" id="articleName" th:value="${name}">
+        <input type="text" class="form-control" name="articleName" id="articleName"
+               th:value="${article.articleName}" required>
     </div>
     <div class="mb-3">
         <label for="articleDescription" class="form-label">Descripción de Articulo</label>
-        <input type="text" class="form-control" name="description" id="articleDescription" th:value="${description}">
+        <input type="text" class="form-control" name="articleDescription" id="articleDescription"
+               th:value="${article.articleDescription}" required>
     </div>
     <div class="mb-3">
         <label for="file" class="form-label">Imagen</label>
-        <input type="file" class="form-control" name="file" id="file" aria-describedby="fileAlert" th:value="${description}">
+
+        <!-- Si hay una imagen actual, mostrarla como vista previa -->
+        <div th:if="${article.image != null}">
+            <p>Imagen actual: <span th:text="${article.image.name}"></span></p>
+            <img th:src="@{/image/article/__${article.idArticle}__}" alt="Imagen actual" style="max-width: 200px;"/>
+            <!-- Campo oculto con el nombre de la imagen actual -->
+            <input type="hidden" name="existingImage" th:value="${article.image.name}"/>
+        </div>
+
+        <!-- Campo de carga de imagen (siempre visible) -->
+        <input type="file" class="form-control" name="file" id="file" aria-describedby="fileAlert">
+
         <div id="fileAlert" class="form-text">La imagen debe poseer un formato válido.</div>
     </div>
 
     <div class="form-group my-3">
-        <select name="idFactory">
-            <option>Seleccionar Fábrica</option>
+        <label for="idFactory">Fábrica</label>
+        <select class="form-control" name="idFactory" id="idFactory" required>
+            <option value="" disabled th:selected="${article.factory == null}">Seleccionar Fábrica</option>
             <option th:each="factory : ${factories}"
                     th:value="${factory.idFactory}"
                     th:text="${factory.factoryName}"
-            ></option>
+                    th:selected="${article.factory != null} ? ${factory.idFactory} == ${article.factory.idFactory} : false">
+            </option>
         </select>
     </div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary" th:text="${updateMode} ? 'Actualizar' : 'Crear'"></button>
+
 </form>
 <main th:replace="~{fragments/main :: main}"></main>
 <footer th:replace="~{fragments/footer :: footer}"></footer>

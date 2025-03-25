@@ -4,7 +4,7 @@
 <body>
 <main th:fragment="main">
     <section class="welcome">
-        <h2 sec:authorize="isAuthenticated()" th:text="${#strings.capitalize(session.userSession.name)} + ' bienvenido/a a tu panel'"></h2>
+        <h2 sec:authorize="isAuthenticated()" th:text="${session.userSession != null && session.userSession.name != null ? #strings.capitalize(session.userSession.name) : 'Invitado'}"></h2>
         <p>Accede a las opciones para gestionar fábricas y artículos.</p>
     </section>
 </main>

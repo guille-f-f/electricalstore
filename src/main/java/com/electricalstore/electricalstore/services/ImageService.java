@@ -39,6 +39,12 @@ public class ImageService {
         return imageRepository.save(image);
     }
 
+    @Transactional
+    public Image updateImage(UUID id, String name, String mime, String contentType, byte[] content) throws IOException {
+        Image image = getImageOrThrow(id);
+        return imageRepository.save(image);
+    }
+
     // =======================
     // Private methods
     // =======================

@@ -2,7 +2,7 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragments/head :: head('Lista de Articulos.')}"></head>
 <body class="lista-articulos">
-<header th:replace="fragments/header :: header"></header>
+<header th:replace="~{fragments/header :: header}"></header>
 <main class="main-lista-articulos">
     <section class="form-container">
         <h2>Gestión de Artículos</h2>
@@ -32,22 +32,21 @@
                 <td th:text="${article.articleName}"></td>
                 <td th:text="${article.articleDescription}"></td>
                 <td><img th:src="@{/image/article/__${article.idArticle}__}" alt=""/></td>
-<!--                <td>-->
-<!--                    <a th:href="@{/artcile/update/__${artcile.idArticle}__}" class="btn btn-edit">-->
-<!--                        <i class="fas fa-edit"></i> Modificar-->
-<!--                    </a>-->
-<!--                    <form action="#" method="POST" style="display: inline;">-->
-<!--                        <button type="submit" class="btn btn-delete" onclick="return confirm('¿Estás seguro?')">-->
-<!--                            <i class="fas fa-trash-alt"></i> Eliminar-->
-<!--                        </button>-->
-<!--                    </form>-->
-<!--                </td>-->
+                <td>
+                    <a th:href="@{/article/form/__${article.idArticle}__}" class="btn btn-edit">
+                        <i class="fas fa-edit">Modificar</i>
+                    </a>
+                    <form th:action="@{/article/delete/__${article.idArticle}__}" method="POST" style="display: inline;">
+                        <button type="submit" class="btn btn-delete" onclick="return confirm('¿Estás seguro?')">
+                            <i class="fas fa-trash-alt"></i> Eliminar
+                        </button>
+                    </form>
+                </td>
             </tr>
             </tbody>
         </table>
     </section>
 </main>
-<main th:replace="~{fragments/main :: main}"></main>
 <footer th:replace="~{fragments/footer :: footer}"></footer>
 </body>
 </html>

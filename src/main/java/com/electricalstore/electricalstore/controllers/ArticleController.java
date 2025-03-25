@@ -4,20 +4,13 @@ import com.electricalstore.electricalstore.entities.Article;
 import com.electricalstore.electricalstore.services.ArticleService;
 import com.electricalstore.electricalstore.services.FactoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,37 +25,45 @@ public class ArticleController {
     @Autowired
     private FactoryService factoryService;
 
-//    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    //    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/list")
     public String getAllArticles(ModelMap model) {
-        model.addAttribute("articles", articleService.getAllArticles());
+        List<Article> articles = articleService.getAllArticles();
+        articles.sort(Comparator.comparingInt(Article::getArticleNumber));
+        model.addAttribute("articles", articles);
         return "article_list.html";
     }
 
     @GetMapping("/form")
     public String showAddArticleForm(ModelMap model) {
+        model.addAttribute("article", new Article());
         model.addAttribute("factories", factoryService.getAllFactories());
+        model.addAttribute("updateMode", false);
         return "article_form.html";
     }
 
     @GetMapping("/form/{idArticle}")
-    public String showAddArticleForm(@RequestParam UUID idArticle, ModelMap model) {
-        model.addAttribute("article", articleService.getArticleById(idArticle))
+    public String showUpdateArticleForm(@PathVariable String idArticle, ModelMap model) {
+        model.addAttribute("article", articleService.getArticleById(UUID.fromString(idArticle)));
         model.addAttribute("factories", factoryService.getAllFactories());
+        model.addAttribute("updateMode", true);
         return "article_form.html";
     }
 
     @RequestMapping("/add")
-    public String handleAddArticle(@RequestParam String name, @RequestParam String description, @RequestParam String idFactory, @RequestParam(required = false) MultipartFile file) throws IOException {
-        System.out.println("PREMETODO");
-        articleService.addArticle(name, description, UUID.fromString(idFactory), file);
-        System.out.println("PostMETODO");
-        return "redirect:/list";
+    public String handleAddArticle(@RequestParam Boolean updateMode, @RequestParam(required = false) UUID idArticle, @RequestParam String articleName, @RequestParam String articleDescription, @RequestParam UUID idFactory, @RequestParam(required = false) MultipartFile file) throws IOException {
+        if (updateMode) {
+            articleService.updateArticle(idArticle, articleName, articleDescription, idFactory, file);
+        } else {
+            articleService.addArticle(articleName, articleDescription, idFactory, file);
+        }
+        return "redirect:/article/list";
     }
 
-    @GetMapping("/update/{idArticle}")
-    public String showUpdateArticleForm(@RequestParam UUID idArticle) {
-        return "redirect:/form/" + idArticle;
+    @PostMapping("/delete/{idArticle}")
+    public String handleDeleteArticle(@PathVariable UUID idArticle) {
+        articleService.deleteArticleById(idArticle);
+        return "redirect:/article/list";
     }
 
 }

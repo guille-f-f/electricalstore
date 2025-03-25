@@ -140,6 +140,10 @@ html, body {
     background-color: #fff; /* Fondo blanco para las celdas */
 }
 
+.lista-articulos-table td img {
+    height: 150px;
+}
+
 /* Ajustes para los botones */
 .lista-articulos-table .btn {
     padding: 8px 15px; /* Ajustamos el tamaño del botón */
