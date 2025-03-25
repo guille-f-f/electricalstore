@@ -16,11 +16,8 @@
     <table class="table lista-articulos-table">
         <thead>
         <tr>
-            <th>Nro.</th>
             <th>ID</th>
             <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Imagen</th>
             <th>Acciones</th>
         </tr>
         </thead>
@@ -28,7 +25,6 @@
         <tr>
             <td th:text="${factory.idFactory}"></td>
             <td th:text="${factory.factoryName}"></td>
-            <td th:text="${}"></td>
             <td>
                 <a th:href="@{/factory/form/__${factory.idFactory}__}" class="btn btn-edit">
                     <i class="fas fa-edit">Modificar</i>
@@ -44,7 +40,6 @@
     </table>
 </section>
 </main>
-<main th:replace="~{fragments/main :: main}"></main>
 <footer th:replace="~{fragments/footer :: footer}"></footer>
 </body>
 </html>

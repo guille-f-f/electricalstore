@@ -22,7 +22,7 @@ public class SecurityWeb {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/css/**", "/js/**", "/img/**").permitAll() // static documents
-                        .requestMatchers("/", "/login", "/register", "/article/form", "/article/add", "/article/list", "/image/**").permitAll()
+                        .requestMatchers("/", "/login", "/register", "/image/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
