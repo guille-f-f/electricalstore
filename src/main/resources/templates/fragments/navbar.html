@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+>
+  <head></head>
+  <body>
+    <nav th:fragment="navbar">
+      <a href="/">
+        <h1>La Casa de Electricidad</h1>
+      </a>
+      <div class="nav-buttons">
+        <ul sec:authorize="isAuthenticated()">
+          <li>
+            <a th:href="@{/factory/list}" class="btn">Listar fábricas</a>
+          </li>
+          <li>
+            <a th:href="@{/article/list}" class="btn">Listar artículos</a>
+          </li>
+          <li>
+            <a th:href="@{/logout}" class="btn logout">Cerrar sesión</a>
+          </li>
+        </ul>
+        <ul sec:authorize="isAnonymous()">
+          <li class="nav-item">
+            <a th:href="@{/register}" class="btn logout">Registrarse</a>
+          </li>
+          <li class="nav-item">
+            <a th:href="@{/login}" class="btn logout">Iniciar Sesión</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </body>
+</html>
