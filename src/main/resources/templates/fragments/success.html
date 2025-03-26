@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html
+  lang="es"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+  <head></head>
+  <body>
+    <div
+      th:fragment="success"
+      th:if="${success} != null"
+      th:text="${success}"
+      class="alert alert-success"
+      id="exito"
+    ></div>
+  </body>
+</html>

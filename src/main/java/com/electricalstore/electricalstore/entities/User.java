@@ -12,10 +12,11 @@ import java.util.UUID;
 @Table(name = "user")
 @Data
 public class User {
+    @SuppressWarnings("deprecation")
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(name = "id_factory", updatable = false, nullable = false)
+    @Column(name = "id_user", updatable = false, nullable = false)
     private UUID id;
 
     @Email(message = "El email debe ser válido.")
@@ -32,7 +33,7 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column
+    @Enumerated(EnumType.STRING)
     private Rol rol;
 
 }
