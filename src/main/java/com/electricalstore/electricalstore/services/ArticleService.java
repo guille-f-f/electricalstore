@@ -7,6 +7,7 @@ import com.electricalstore.electricalstore.repositories.ArticleRepository;
 import com.electricalstore.electricalstore.repositories.FactoryRepository;
 import jakarta.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-//@PreAuthorize("isAuthenticated()")
+// @PreAuthorize("isAuthenticated()")
 public class ArticleService {
 
     @Autowired
@@ -38,20 +39,21 @@ public class ArticleService {
         return getArticleOrThrow(id);
     }
 
-    //    @PreAuthorize("hasAnyRole('ADMIN')")
+    // @PreAuthorize("hasAnyRole('ADMIN')")
     @Transactional
     public Article addArticle(String name, String description, UUID idFactory) throws IOException {
         Article article = new Article();
         return articleRepository.save(populateArticle(article, name, description, idFactory, null));
     }
 
-    //    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @Transactional
     public Article addArticle(String name, String description, UUID idFactory, MultipartFile file) throws IOException {
         Article article = new Article();
         return articleRepository.save(populateArticle(article, name, description, idFactory, file));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @Transactional
     public void addImageToArticle(UUID id, MultipartFile file) throws IOException {
         validateFile(file);
@@ -63,16 +65,17 @@ public class ArticleService {
         }
     }
 
-    //    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @Transactional
-    public Article updateArticle(UUID id, String name, String description, UUID idFactory, MultipartFile file) throws IOException {
-//        validateFile(file);
+    public Article updateArticle(UUID id, String name, String description, UUID idFactory, MultipartFile file)
+            throws IOException {
+        // validateFile(file);
         System.out.println(id);
         Article article = getArticleOrThrow(id);
         return articleRepository.save(populateArticle(article, name, description, idFactory, file));
     }
 
-    //    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @Transactional
     public String deleteArticleById(UUID id) {
         Article article = getArticleOrThrow(id);
@@ -80,11 +83,18 @@ public class ArticleService {
         return "Article with ID " + id + " deleted successfully.";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @Transactional
+    public Boolean findArticleByAssociatedFactory(UUID idFactory) {
+        return articleRepository.existsArticlesByFactory(idFactory);
+    }
+
     // =======================
     // Private methods
     // =======================
 
-    private Article populateArticle(Article article, String name, String description, UUID idFactory, @Nullable MultipartFile file) throws IOException {
+    private Article populateArticle(Article article, String name, String description, UUID idFactory,
+            @Nullable MultipartFile file) throws IOException {
         if (article.getArticleNumber() == null) {
             article.setArticleNumber(generateNextArticleNumber());
         }

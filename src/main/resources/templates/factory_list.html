@@ -2,13 +2,13 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragments/head :: head('Lista de Fábricas.')}"></head>
 <body class="lista-articulos">
-<header th:replace="fragments/header :: header"></header>
+<header th:replace="~{fragments/header :: header}"></header>
 <section class="form-container">
     <h2>Gestión de Fabricas</h2>
 
     <!-- Mensajes de éxito o error -->
-    <div class="alert alert-success" id="exito" style="display: none;">¡Operación exitosa!</div>
-    <div class="alert alert-danger" id="error" style="display: none;">¡Hubo un error!</div>
+    <div th:replace="~{fragments/success :: success}"></div>
+    <div th:replace="~{fragments/error :: error}"></div>
 
     <a th:href="@{/factory/form}" class="btn">Nueva Fábrica</a>
 

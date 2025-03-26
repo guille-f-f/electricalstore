@@ -55,7 +55,7 @@ public class HomePageController {
         return "redirect:/homepage";
     }
 
-    @PreAuthorize("HasAnyRole('USER', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/homepage")
     public String showDashboard() {
         return "homepage.html";

@@ -54,8 +54,8 @@ public class ArticleController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
-    @RequestMapping("/add")
-    public String handleAddArticle(@RequestParam Boolean updateMode, @RequestParam(required = false) UUID idArticle,
+    @RequestMapping("/save")
+    public String handleSaveArticle(@RequestParam Boolean updateMode, @RequestParam(required = false) UUID idArticle,
             @RequestParam String articleName, @RequestParam String articleDescription, @RequestParam UUID idFactory,
             @RequestParam(required = false) MultipartFile file) throws IOException {
         if (updateMode) {

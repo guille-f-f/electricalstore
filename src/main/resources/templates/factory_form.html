@@ -1,24 +1,46 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{fragments/head :: head('Formulario de Articulo.')}"></head>
-<body>
-<header th:replace="~{fragments/header :: header}"></header>
-<h2 class="welcome fw-normal text-center" th:text="${updateMode} ? 'EDITAR ARTICULO' : 'CREAR ARTICULO'"></h2>
-<form class="w-1/2 container-sm mt-5" th:action="@{/factory/add}" method="post">
-    
-    <input type="hidden" name="idFactory" th:value="${factory.idFactory}">
-    <input type="hidden" name="updateMode" th:value="${updateMode}">
-    
-    <div class="mb-3">
+<html
+  lang="es"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+  <head
+    th:replace="~{fragments/head :: head('Formulario de Articulo.')}"
+  ></head>
+  <body>
+    <header th:replace="~{fragments/header :: header}"></header>
+    <h2
+      class="welcome fw-normal text-center"
+      th:text="${updateMode} ? 'EDITAR FÁBRICA' : 'CREAR FÁBRICA'"
+    ></h2>
+    <form
+      class="w-1/2 container-sm mt-5"
+      th:action="@{/factory/save}"
+      method="post"
+    >
+      <input type="hidden" name="idFactory" th:value="${factory.idFactory}" />
+      <input type="hidden" name="updateMode" th:value="${updateMode}" />
+
+      <div class="mb-3">
         <label for="factoryName" class="form-label">Nombre de Fábrica</label>
-        <input type="text" class="form-control" name="factoryName" id="factoryName"
-               th:value="${factory.factoryName}" required>
-    </div>
+        <input
+          type="text"
+          class="form-control"
+          name="factoryName"
+          id="factoryName"
+          th:value="${factory.factoryName}"
+          required
+        />
+      </div>
 
-    <button type="submit" class="btn btn-primary" th:text="${updateMode} ? 'Actualizar' : 'Crear'"></button>
-
-</form>
-<main th:replace="~{fragments/main :: main}"></main>
-<footer th:replace="~{fragments/footer :: footer}"></footer>
-</body>
+      <button
+        type="submit"
+        class="btn btn-primary"
+        th:text="${updateMode} ? 'Actualizar' : 'Crear'"
+      ></button>
+      
+    </form>
+    <main th:replace="~{fragments/main :: main}"></main>
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
+  </body>
 </html>
