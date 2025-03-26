@@ -4,6 +4,7 @@ import com.electricalstore.electricalstore.entities.Article;
 import com.electricalstore.electricalstore.services.ArticleService;
 import com.electricalstore.electricalstore.services.FactoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ import java.util.UUID;
 
 @Controller
 @RequestMapping("/article")
-//@PreAuthorize("isAutheticated()")
+@PreAuthorize("isAuthenticated()")
 public class ArticleController {
 
     @Autowired
@@ -25,7 +26,7 @@ public class ArticleController {
     @Autowired
     private FactoryService factoryService;
 
-    //    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/list")
     public String getAllArticles(ModelMap model) {
         List<Article> articles = articleService.getAllArticles();
@@ -34,6 +35,7 @@ public class ArticleController {
         return "article_list.html";
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/form")
     public String showAddArticleForm(ModelMap model) {
         model.addAttribute("article", new Article());
@@ -42,6 +44,7 @@ public class ArticleController {
         return "article_form.html";
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/form/{idArticle}")
     public String showUpdateArticleForm(@PathVariable String idArticle, ModelMap model) {
         model.addAttribute("article", articleService.getArticleById(UUID.fromString(idArticle)));
@@ -50,8 +53,11 @@ public class ArticleController {
         return "article_form.html";
     }
 
-    @RequestMapping("/add")
-    public String handleAddArticle(@RequestParam Boolean updateMode, @RequestParam(required = false) UUID idArticle, @RequestParam String articleName, @RequestParam String articleDescription, @RequestParam UUID idFactory, @RequestParam(required = false) MultipartFile file) throws IOException {
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @RequestMapping("/save")
+    public String handleSaveArticle(@RequestParam Boolean updateMode, @RequestParam(required = false) UUID idArticle,
+            @RequestParam String articleName, @RequestParam String articleDescription, @RequestParam UUID idFactory,
+            @RequestParam(required = false) MultipartFile file) throws IOException {
         if (updateMode) {
             articleService.updateArticle(idArticle, articleName, articleDescription, idFactory, file);
         } else {
@@ -60,6 +66,7 @@ public class ArticleController {
         return "redirect:/article/list";
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/delete/{idArticle}")
     public String handleDeleteArticle(@PathVariable UUID idArticle) {
         articleService.deleteArticleById(idArticle);

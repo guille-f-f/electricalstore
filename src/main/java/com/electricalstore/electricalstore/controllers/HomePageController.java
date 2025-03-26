@@ -5,6 +5,7 @@ import com.electricalstore.electricalstore.services.ArticleService;
 import com.electricalstore.electricalstore.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +22,7 @@ public class HomePageController {
     private ArticleService articleService;
 
     @GetMapping("/")
-    public String homePage(ModelMap model) {
+    public String showIndex(ModelMap model) {
         model.addAttribute("articles", articleService.getAllArticles());
         return "index.html";
     }
@@ -32,12 +33,14 @@ public class HomePageController {
     }
 
     @GetMapping("/register")
-    public String howRegisterForm() {
+    public String showRegisterForm() {
         return "register.html";
     }
 
     @PostMapping("/register")
-    public String handleUserRegister(@RequestParam String name, @RequestParam String lastName, @RequestParam String email, @RequestParam String password, @RequestParam String repeatPassword, ModelMap modelo) {
+    public String handleUserRegister(@RequestParam String name, @RequestParam String lastName,
+            @RequestParam String email, @RequestParam String password, @RequestParam String repeatPassword,
+            ModelMap modelo) {
         User user = userService.register(email, name, lastName, password, repeatPassword);
         System.out.println("ROLE DE USUARIO ALMACENADO: " + user.getRol());
         return "redirect:/login";
@@ -49,10 +52,11 @@ public class HomePageController {
         if (user.getRol().toString().equals("ADMIN")) {
             return "redirect:/admin/dashboard";
         }
-        return "redirect:/dashboard";
+        return "redirect:/homepage";
     }
 
-    @GetMapping("/dashboard")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @GetMapping("/homepage")
     public String showDashboard() {
         return "homepage.html";
     }

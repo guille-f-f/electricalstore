@@ -2,7 +2,6 @@ package com.electricalstore.electricalstore.controllers;
 
 import com.electricalstore.electricalstore.entities.Article;
 import com.electricalstore.electricalstore.services.ArticleService;
-import com.electricalstore.electricalstore.services.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

@@ -4,7 +4,7 @@
 <body>
 <header th:replace="~{fragments/header :: header}"></header>
 <h2 class="welcome fw-normal text-center" th:text="${updateMode} ? 'EDITAR ARTICULO' : 'CREAR ARTICULO'"></h2>
-<form class="w-1/2 container-sm mt-5" th:action="@{/article/add}" method="post" enctype="multipart/form-data">
+<form class="w-1/2 container-sm mt-5" th:action="@{/article/save}" method="post" enctype="multipart/form-data">
     <input type="hidden" name="idArticle" th:value="${article.idArticle}">
     <input type="hidden" name="updateMode" th:value="${updateMode}">
     <div class="mb-3">
