@@ -1,52 +1,78 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{fragments/head :: head('Lista de Articulos.')}"></head>
-<body class="lista-articulos">
-<header th:replace="~{fragments/header :: header}"></header>
-<main class="main-lista-articulos">
-    <section class="form-container">
-        <h2>Gestión de Artículos</h2>
+<html
+  lang="es"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+  <head th:replace="~{fragments/head :: head('Lista de Articulos.')}"></head>
+  <body class="lista-articulos">
+    <header th:replace="~{fragments/header :: header}"></header>
+    <main class="main-lista-articulos">
+      <section class="form-container">
+        <h2 sec:authorize="hasRole('ADMIN')">Gestión de Artículos</h2>
+        <h2 sec:authorize="hasRole('USER')">Lista de Artículos</h2>
+        
 
         <!-- Mensajes de éxito o error -->
-        <div class="alert alert-success" id="exito" style="display: none;">¡Operación exitosa!</div>
-        <div class="alert alert-danger" id="error" style="display: none;">¡Hubo un error!</div>
+        <div class="alert alert-success" id="exito" style="display: none">
+          ¡Operación exitosa!
+        </div>
+        <div class="alert alert-danger" id="error" style="display: none">
+          ¡Hubo un error!
+        </div>
 
-        <a th:href="@{/article/form}" class="btn">Nuevo Artículo</a>
+        <a sec:authorize="hasRole('ADMIN')" th:href="@{/article/form}" class="btn">Nuevo Artículo</a>
 
         <!-- Tabla para mostrar los artículos -->
         <table class="table lista-articulos-table">
-            <thead>
+          <thead>
             <tr>
-                <th>Nro.</th>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Descripción</th>
-                <th>Imagen</th>
-                <th>Acciones</th>
+              <th>Nro.</th>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Descripción</th>
+              <th>Imagen</th>
+              <th sec:authorize="hasRole('ADMIN')">Acciones</th>
             </tr>
-            </thead>
-            <tbody th:each="article : ${articles}">
+          </thead>
+          <tbody th:each="article : ${articles}">
             <tr>
-                <td th:text="${article.articleNumber}"></td>
-                <td th:text="${article.idArticle}"></td>
-                <td th:text="${article.articleName}"></td>
-                <td th:text="${article.articleDescription}"></td>
-                <td><img th:src="@{/image/article/__${article.idArticle}__}" alt=""/></td>
-                <td>
-                    <a th:href="@{/article/form/__${article.idArticle}__}" class="btn btn-edit">
-                        <i class="fas fa-edit">Modificar</i>
-                    </a>
-                    <form th:action="@{/article/delete/__${article.idArticle}__}" method="POST" style="display: inline;">
-                        <button type="submit" class="btn btn-delete" onclick="return confirm('¿Estás seguro?')">
-                            <i class="fas fa-trash-alt"></i> Eliminar
-                        </button>
-                    </form>
-                </td>
+              <td th:text="${article.articleNumber}"></td>
+              <td th:text="${article.idArticle}"></td>
+              <td th:text="${article.articleName}"></td>
+              <td th:text="${article.articleDescription}"></td>
+              <td>
+                <img
+                  th:src="@{/image/article/__${article.idArticle}__}"
+                  alt=""
+                />
+              </td>
+              <td sec:authorize="hasRole('ADMIN')">
+                <a
+                  th:href="@{/article/form/__${article.idArticle}__}"
+                  class="btn btn-edit"
+                >
+                  <i class="fas fa-edit">Modificar</i>
+                </a>
+                <form
+                  th:action="@{/article/delete/__${article.idArticle}__}"
+                  method="POST"
+                  style="display: inline"
+                >
+                  <button
+                    type="submit"
+                    class="btn btn-delete"
+                    onclick="return confirm('¿Estás seguro?')"
+                  >
+                    <i class="fas fa-trash-alt"></i> Eliminar
+                  </button>
+                </form>
+              </td>
             </tr>
-            </tbody>
+          </tbody>
         </table>
-    </section>
-</main>
-<footer th:replace="~{fragments/footer :: footer}"></footer>
-</body>
+      </section>
+    </main>
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
+  </body>
 </html>
