@@ -57,6 +57,18 @@
         />
       </div>
 
+      <div class="form-group my-3">
+        <label>Rol</label>
+        <select class="form-control" name="rol" id="rol" required>
+            <option value="" disabled th:selected="${user.rol == null}">Seleccionar Rol</option>
+            <option th:each="rol : ${roles}"
+                    th:value="${rol}"
+                    th:text="${rol}"
+                    th:selected="${user.rol != null} ? ${rol} == ${user.rol} : false">
+            </option>
+        </select>
+    </div>
+
       <div th:if="${user.password} == null" class="mb-3">
         <label for="email" class="form-label">Password</label>
         <input
@@ -64,11 +76,21 @@
           class="form-control"
           name="password"
           id="password"
-          th:value="${user.password}"
           required
         />
       </div>
-      
+
+      <div th:if="${user.password} == null" class="mb-3">
+        <label for="email" class="form-label">Repetir password</label>
+        <input
+          type="repeatPassword"
+          class="form-control"
+          name="repeatPassword"
+          id="repeatPassword"
+          required
+        />
+      </div>
+
       <button
         type="submit"
         class="btn btn-primary"

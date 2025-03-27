@@ -43,9 +43,14 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public User updateUser(String email, String name, String lastName) {
-        User user = getUserOrThrow(email);
-        return userRepository.save(populateUser(user, email, name, lastName, user.getPassword()));
+    public User updateUser(UUID id, String email, String name, String lastName, Rol rol) {
+        User user;
+        if (id != null) {
+            user = getUserOrThrow(id);
+        } else {
+            user = getUserOrThrow(email);
+        }
+        return userRepository.save(populateUser(user, email, name, lastName, user.getPassword(), rol));
     }
 
     @Transactional
@@ -83,12 +88,16 @@ public class UserService implements UserDetailsService {
     // Private methods
     // =======================
 
-    private User populateUser(User user, String email, String name, String lastName, String password) {
+    private User populateUser(User user, String email, String name, String lastName, String password, Rol rol) {
         user.setEmail(email);
         user.setName(name);
         user.setLastName(lastName);
         user.setPassword(passwordEncoder.encode(password));
-        user.setRol(Rol.USER);
+        if (rol != null) {
+            user.setRol(rol);
+        } else {
+            user.setRol(Rol.USER);
+        }
         return user;
     }
 

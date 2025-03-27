@@ -17,7 +17,7 @@
           <li>
             <a th:href="@{/article/list}" class="btn">Artículos</a>
           </li>
-          <li>
+          <li sec:authorize="hasRole('ADMIN')">
             <a th:href="@{/user/list}" class="btn">Usuarios</a>
           </li>
           <li>
