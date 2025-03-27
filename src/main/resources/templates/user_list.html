@@ -3,15 +3,14 @@
 <head th:replace="~{fragments/head :: head('Lista de Fábricas.')}"></head>
 <body class="lista-articulos">
 <header th:replace="~{fragments/header :: header}"></header>
-<section class="form-container">
-    <h2 sec:authorize="hasRole('ADMIN')">Gestión de Fábricas</h2>
-    <h2 sec:authorize="hasRole('USER')">Lista de Fábricas</h2>
+<section sec:authorize="hasRole('ADMIN')" class="form-container">
+    <h2>Gestión de Usuarios</h2>
 
     <!-- Mensajes de éxito o error -->
     <div th:replace="~{fragments/success :: success}"></div>
     <div th:replace="~{fragments/error :: error}"></div>
 
-    <a sec:authorize="hasRole('ADMIN')" th:href="@{/factory/form}" class="btn">Nueva Fábrica</a>
+    <a th:href="@{/user/form}" class="btn">Nuevo Usuario</a>
 
     <!-- Tabla para mostrar fábricas -->
     <table class="table lista-articulos-table">
@@ -19,18 +18,22 @@
         <tr>
             <th>ID</th>
             <th>Nombre</th>
-            <th sec:authorize="hasRole('ADMIN')">Acciones</th>
+            <th>eMail</th>
+            <th>Rol</th>
+            <th>Acciones</th>
         </tr>
         </thead>
-        <tbody th:each="factory : ${factories}">
+        <tbody th:each="user : ${users}">
         <tr>
-            <td th:text="${factory.idFactory}"></td>
-            <td th:text="${factory.factoryName}"></td>
-            <td sec:authorize="hasRole('ADMIN')">
-                <a th:href="@{/factory/form/__${factory.idFactory}__}" class="btn btn-edit">
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.name} + ' ' + ${user.lastName}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.rol}"></td>
+            <td>
+                <a th:href="@{/user/form/__${user.id}__}" class="btn btn-edit">
                     <i class="fas fa-edit">Modificar</i>
                 </a>
-                <form th:action="@{/factory/delete/__${factory.idFactory}__}" method="POST" style="display: inline;">
+                <form th:action="@{/user/delete/__${user.id}__}" method="POST" style="display: inline;">
                     <button type="submit" class="btn btn-delete" onclick="return confirm('¿Estás seguro?')">
                         <i class="fas fa-trash-alt"></i> Eliminar
                     </button>
