@@ -7,6 +7,7 @@ import com.electricalstore.electricalstore.exeptions.ValidateException;
 import com.electricalstore.electricalstore.repositories.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,16 +21,19 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
-//@PreAuthorize("isAuthenticated()")
 public class UserService implements UserDetailsService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Transactional
     public User register(String email, String name, String lastName, String password, String repeatPassword) {
@@ -62,6 +66,17 @@ public class UserService implements UserDetailsService {
         HttpSession session = attr.getRequest().getSession(true);
         session.setAttribute("userSession", user);
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
+    }
+
+    @Transactional(readOnly = true)
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public User getUserById(UUID id) {
+        User user = getUserOrThrow(id);
+        return user;
     }
 
     // =======================
@@ -111,6 +126,11 @@ public class UserService implements UserDetailsService {
     private User getUserOrThrow(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new ObjectNotFoundException("User with email " + email + " not found."));
+    }
+
+    private User getUserOrThrow(UUID id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("User with id " + id + " not found."));
     }
 
 }

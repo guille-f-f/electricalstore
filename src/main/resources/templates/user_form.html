@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html
+  lang="es"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+  <head
+    th:replace="~{fragments/head :: head('Formulario de Usuarios.')}"
+  ></head>
+  <body>
+    <header th:replace="~{fragments/header :: header}"></header>
+    <h2
+      class="welcome fw-normal text-center"
+      th:text="${updateMode} ? 'EDITAR USUARIO' : 'CREAR USUARIO'"
+    ></h2>
+    <form
+      class="w-1/2 container-sm my-5"
+      th:action="@{/user/save}"
+      method="post"
+    >
+      <input type="hidden" name="id" th:value="${user.id}" />
+      <input type="hidden" name="updateMode" th:value="${updateMode}" />
+
+      <div class="mb-3">
+        <label for="name" class="form-label">Nombre</label>
+        <input
+          type="text"
+          class="form-control"
+          name="name"
+          id="name"
+          th:value="${user.name}"
+          required
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="lastName" class="form-label">Apellido</label>
+        <input
+          type="text"
+          class="form-control"
+          name="lastName"
+          id="lastName"
+          th:value="${user.lastName}"
+          required
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="email" class="form-label">eMail</label>
+        <input
+          type="email"
+          class="form-control"
+          name="email"
+          id="email"
+          th:value="${user.email}"
+          required
+        />
+      </div>
+
+      <div th:if="${user.password} == null" class="mb-3">
+        <label for="email" class="form-label">Password</label>
+        <input
+          type="password"
+          class="form-control"
+          name="password"
+          id="password"
+          th:value="${user.password}"
+          required
+        />
+      </div>
+      
+      <button
+        type="submit"
+        class="btn btn-primary"
+        th:text="${updateMode} ? 'Actualizar Usuario' : 'Crear Usuario'"
+      ></button>
+    </form>
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
+  </body>
+</html>
