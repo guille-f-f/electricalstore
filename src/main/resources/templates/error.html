@@ -5,9 +5,10 @@
 >
   <head th:replace="~{fragments/head :: head('Error')}"></head>
   <body>
-    <nav th:replace="~{fragments/navbar :: navbar}"></nav>
+    <nav th:replace="~{fragments/header :: header}"></nav>
     <div th:replace="~{fragments/success :: success}"></div>
     <div th:replace="~{fragments/error :: error}"></div>
-    <h1>ERROR</h1>
+    <main th:replace="~{fragments/main :: main}"></main>
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
   </body>
 </html>

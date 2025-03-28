@@ -7,7 +7,6 @@ import com.electricalstore.electricalstore.exeptions.ValidateException;
 import com.electricalstore.electricalstore.repositories.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -39,7 +38,7 @@ public class UserService implements UserDetailsService {
     public User register(String email, String name, String lastName, String password, String repeatPassword) {
         validation(email, name, lastName, password, repeatPassword);
         User user = new User();
-        return userRepository.save(populateUser(user, email, name, lastName, password));
+        return userRepository.save(populateUser(user, email, name, lastName, password, null));
     }
 
     @Transactional
@@ -59,6 +58,12 @@ public class UserService implements UserDetailsService {
         User user = getUserOrThrow(email);
         user.setPassword(passwordEncoder.encode(password));
         return "Password updated successfully.";
+    }
+
+    @Transactional
+    public String deleteUser(UUID id) {
+        userRepository.deleteById(id);
+        return "User delete successfully.";
     }
 
     @Override

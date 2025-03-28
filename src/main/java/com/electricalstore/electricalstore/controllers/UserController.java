@@ -61,7 +61,7 @@ public class UserController {
         if (updateMode) {
             try {
                 userService.updateUser(id, email, name, lastName, rol);
-                redirectAttributes.addFlashAttribute("success", "Usuario actualizado correctamente");
+                redirectAttributes.addFlashAttribute("success", "Usuario actualizado correctamente.");
             } catch (Exception e) {
                 redirectAttributes.addFlashAttribute("error",
                         "No se ha podido actualiza el usuario: " + e.getMessage());
@@ -69,12 +69,24 @@ public class UserController {
         } else {
             try {
                 userService.register(email, name, lastName, password, repeatPassword);
-                redirectAttributes.addFlashAttribute("success", "Usuario registrado correctamente");
+                redirectAttributes.addFlashAttribute("success", "Usuario registrado correctamente.");
             } catch (Exception e) {
                 redirectAttributes.addFlashAttribute("error",
                         "No se ha podido registrar el usuario: " + e.getMessage());
             }
         }
+        return "redirect:/user/list";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteUser(@PathVariable UUID id, RedirectAttributes redirectAttributes) {
+        try {
+            userService.deleteUser(id);
+            redirectAttributes.addFlashAttribute("success", "Usuario eliminado correctamente.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "No se ha podido eliminar el usuario: " + e.getMessage());
+        }
+        System.out.println("pasamos por la función de eliminación usuarios");
         return "redirect:/user/list";
     }
 
