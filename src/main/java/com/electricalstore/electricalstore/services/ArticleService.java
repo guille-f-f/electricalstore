@@ -41,16 +41,16 @@ public class ArticleService {
 
     // @PreAuthorize("hasAnyRole('ADMIN')")
     @Transactional
-    public Article addArticle(String name, String description, UUID idFactory) throws IOException {
+    public Article addArticle(String name, String description, Integer stock, UUID idFactory) throws IOException {
         Article article = new Article();
-        return articleRepository.save(populateArticle(article, name, description, idFactory, null));
+        return articleRepository.save(populateArticle(article, name, description, stock, idFactory, null));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @Transactional
-    public Article addArticle(String name, String description, UUID idFactory, MultipartFile file) throws IOException {
+    public Article addArticle(String name, String description, Integer stock, UUID idFactory, MultipartFile file) throws IOException {
         Article article = new Article();
-        return articleRepository.save(populateArticle(article, name, description, idFactory, file));
+        return articleRepository.save(populateArticle(article, name, description, stock, idFactory, file));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
@@ -67,12 +67,12 @@ public class ArticleService {
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @Transactional
-    public Article updateArticle(UUID id, String name, String description, UUID idFactory, MultipartFile file)
+    public Article updateArticle(UUID id, String name, String description, Integer stock, UUID idFactory, MultipartFile file)
             throws IOException {
         // validateFile(file);
         System.out.println(id);
         Article article = getArticleOrThrow(id);
-        return articleRepository.save(populateArticle(article, name, description, idFactory, file));
+        return articleRepository.save(populateArticle(article, name, description, stock, idFactory, file));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
@@ -93,13 +93,14 @@ public class ArticleService {
     // Private methods
     // =======================
 
-    private Article populateArticle(Article article, String name, String description, UUID idFactory,
+    private Article populateArticle(Article article, String name, String description, Integer stock, UUID idFactory,
             @Nullable MultipartFile file) throws IOException {
         if (article.getArticleNumber() == null) {
             article.setArticleNumber(generateNextArticleNumber());
         }
         article.setArticleName(name);
         article.setArticleDescription(description);
+        article.setArticleStock(stock != null ? stock : 1);
         Factory factory = factoryRepository.findById(idFactory)
                 .orElseThrow(() -> new ObjectNotFoundException("Factory with ID " + idFactory + " not found."));
         article.setFactory(factory);

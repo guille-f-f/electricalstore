@@ -26,6 +26,9 @@ public class Article {
     @Column(name = "article_description", nullable = false)
     private String articleDescription;
 
+    @Column(name = "article_stock", nullable = false)
+    private Integer articleStock;
+    
     @ManyToOne
     private Factory factory;
 

@@ -21,6 +21,12 @@
     </div>
 
     <div class="mb-3">
+        <label for="articleStock" class="form-label">Stock de Articulo</label>
+        <input type="number" class="form-control" name="articleStock" id="articleStock"
+               th:value="${article.articleStock}">
+    </div>  
+
+    <div class="mb-3">
         <label for="file" class="form-label">Imagen</label>
 
         <!-- Si hay una imagen actual, mostrarla como vista previa -->

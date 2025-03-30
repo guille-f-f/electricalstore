@@ -56,12 +56,12 @@ public class ArticleController {
     @PreAuthorize("hasAnyRole('ADMIN')")
     @RequestMapping("/save")
     public String handleSaveArticle(@RequestParam Boolean updateMode, @RequestParam(required = false) UUID idArticle,
-            @RequestParam String articleName, @RequestParam String articleDescription, @RequestParam UUID idFactory,
+            @RequestParam String articleName, @RequestParam String articleDescription, @RequestParam(required = false) Integer articleStock, @RequestParam UUID idFactory,
             @RequestParam(required = false) MultipartFile file) throws IOException {
         if (updateMode) {
-            articleService.updateArticle(idArticle, articleName, articleDescription, idFactory, file);
+            articleService.updateArticle(idArticle, articleName, articleDescription, articleStock, idFactory, file);
         } else {
-            articleService.addArticle(articleName, articleDescription, idFactory, file);
+            articleService.addArticle(articleName, articleDescription, articleStock, idFactory, file);
         }
         return "redirect:/article/list";
     }

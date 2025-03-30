@@ -31,6 +31,8 @@
               <th>ID</th>
               <th>Nombre</th>
               <th>Descripción</th>
+              <th>Stock</th>
+              <th>Fábrica</th>
               <th>Imagen</th>
               <th sec:authorize="hasRole('ADMIN')">Acciones</th>
             </tr>
@@ -41,6 +43,8 @@
               <td th:text="${article.idArticle}"></td>
               <td th:text="${article.articleName}"></td>
               <td th:text="${article.articleDescription}"></td>
+              <td th:text="${article.articleStock}"></td>
+              <td th:text="${article.factory.factoryName}"></td>
               <td>
                 <img
                   th:src="@{/image/article/__${article.idArticle}__}"
