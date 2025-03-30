@@ -39,21 +39,21 @@ public class SecurityWeb {
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login")
                         .permitAll())
-                .csrf(csrf -> csrf.disable());
-                // .exceptionHandling(customizer -> customizer
-                //         .accessDeniedHandler(customAccessDeniedHandler()) // errors 403
-                //         .authenticationEntryPoint((request, response, authException) -> response.sendRedirect("/error")) // authetication errors
-                // );
+                .csrf(csrf -> csrf.disable())
+                .exceptionHandling(customizer -> customizer
+                        .accessDeniedHandler(customAccessDeniedHandler()) // errors 403
+                        .authenticationEntryPoint((request, response, authException) -> response.sendRedirect("/error")) // authetication errors
+                );
 
         return http.build();
     }
 
-    // @Bean
-    // public AccessDeniedHandler customAccessDeniedHandler() {
-    //     return (request, response, accessDeniedException) -> {
-    //         response.sendRedirect("/error"); // redirect to /error
-    //     };
-    // }
+    @Bean
+    public AccessDeniedHandler customAccessDeniedHandler() {
+        return (request, response, accessDeniedException) -> {
+            response.sendRedirect("/error"); // redirect to /error
+        };
+    }
 
     // This method allows access to thymeleaf data
     // th:src="@{/images/user/{id}(id=${session.usersession.id})}
