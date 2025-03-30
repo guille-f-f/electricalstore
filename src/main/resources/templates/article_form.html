@@ -7,30 +7,35 @@
 <form class="w-1/2 container-sm mt-5" th:action="@{/article/save}" method="post" enctype="multipart/form-data">
     <input type="hidden" name="idArticle" th:value="${article.idArticle}">
     <input type="hidden" name="updateMode" th:value="${updateMode}">
+
     <div class="mb-3">
         <label for="articleName" class="form-label">Nombre de Articulo</label>
         <input type="text" class="form-control" name="articleName" id="articleName"
                th:value="${article.articleName}" required>
     </div>
+    
     <div class="mb-3">
         <label for="articleDescription" class="form-label">Descripción de Articulo</label>
         <input type="text" class="form-control" name="articleDescription" id="articleDescription"
                th:value="${article.articleDescription}" required>
     </div>
+
     <div class="mb-3">
         <label for="file" class="form-label">Imagen</label>
 
         <!-- Si hay una imagen actual, mostrarla como vista previa -->
         <div th:if="${article.image != null}">
             <p>Imagen actual: <span th:text="${article.image.name}"></span></p>
-            <img th:src="@{/image/article/__${article.idArticle}__}" alt="Imagen actual" style="max-width: 200px;"/>
-            <!-- Campo oculto con el nombre de la imagen actual -->
+            <img id="currentImage" th:src="@{/image/article/__${article.idArticle}__}" 
+                 alt="Imagen actual" style="max-width: 200px; display: block;"/>
             <input type="hidden" name="existingImage" th:value="${article.image.name}"/>
         </div>
 
-        <!-- Campo de carga de imagen (siempre visible) -->
-        <input type="file" class="form-control" name="file" id="file" aria-describedby="fileAlert">
+        <!-- Vista previa de la nueva imagen -->
+        <img id="previewImage" src="" alt="Vista previa" style="max-width: 200px; display: none; margin-top: 10px;"/>
 
+        <!-- Campo de carga de imagen -->
+        <input type="file" class="form-control" name="file" id="file" aria-describedby="fileAlert">
         <div id="fileAlert" class="form-text">La imagen debe poseer un formato válido.</div>
     </div>
 
@@ -49,6 +54,29 @@
     <button type="submit" class="btn btn-primary" th:text="${updateMode} ? 'Actualizar' : 'Crear'"></button>
 
 </form>
+
+<script>
+    document.getElementById("file").addEventListener("change", function(event) {
+        const file = event.target.files[0];
+        console.log(event.target.files[0]);
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const previewImage = document.getElementById("previewImage");
+                previewImage.src = e.target.result;
+                previewImage.style.display = "block";
+
+                // Opcional: Ocultar la imagen actual cuando se seleccione una nueva
+                const currentImage = document.getElementById("currentImage");
+                if (currentImage) {
+                    currentImage.style.display = "none";
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+
 <main th:replace="~{fragments/main :: main}"></main>
 <footer th:replace="~{fragments/footer :: footer}"></footer>
 </body>

@@ -48,6 +48,9 @@ nav ul li a:hover {
 h2 {
     color: #0056b3;
 }
+th, td {
+    text-align: center !important;
+}
 
 /* Botones */
 .buttons {

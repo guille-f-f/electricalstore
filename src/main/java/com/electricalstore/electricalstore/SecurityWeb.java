@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.thymeleaf.extras.springsecurity6.dialect.SpringSecurityDialect;
 
 @Configuration
@@ -21,9 +22,10 @@ public class SecurityWeb {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        System.out.println("Entry to filterChain");
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/css/**", "/js/**", "/img/**").permitAll() // static documents
-                .requestMatchers("/", "/login", "/register", "/image/**").permitAll()
+                .requestMatchers("/", "/login", "/register", "/image/**", "/error", "/error/**").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated())
                 .formLogin((form) -> form
@@ -38,17 +40,29 @@ public class SecurityWeb {
                         .logoutSuccessUrl("/login")
                         .permitAll())
                 .csrf(csrf -> csrf.disable());
+                // .exceptionHandling(customizer -> customizer
+                //         .accessDeniedHandler(customAccessDeniedHandler()) // errors 403
+                //         .authenticationEntryPoint((request, response, authException) -> response.sendRedirect("/error")) // authetication errors
+                // );
 
         return http.build();
     }
-    
-    // This method allows access to thymeleaf data th:src="@{/images/user/{id}(id=${session.usersession.id})}
+
+    // @Bean
+    // public AccessDeniedHandler customAccessDeniedHandler() {
+    //     return (request, response, accessDeniedException) -> {
+    //         response.sendRedirect("/error"); // redirect to /error
+    //     };
+    // }
+
+    // This method allows access to thymeleaf data
+    // th:src="@{/images/user/{id}(id=${session.usersession.id})}
     @Configuration
-    public class ThymeleafConfig { 
+    public class ThymeleafConfig {
         @Bean
         public SpringSecurityDialect securityDialect() {
             return new SpringSecurityDialect();
         }
     }
-    
+
 }
